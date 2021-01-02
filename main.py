@@ -1,16 +1,38 @@
-# This is a sample Python script.
+import string
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import pandas as pd
+import string
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def load_data():
+    anime = pd.read_csv('anime.csv')
+    rating = pd.read_csv('rating.csv')
+    return anime, rating
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+def clean_data(anime):
+    '''
+    symbol &#039; means '. replaced it with 1 so we will bw able to distinguish the difference.
+    '''
+    anime["name"] = anime["name"].str.replace('&#039;', '\'')
+    anime["name"] = anime["name"].str.replace('\'', '1')
+    anime["name"] = anime["name"].str.replace('[^\s\w]', '')
+    return anime
+
+def fill_missing_data(anime):
+    anime.loc[(anime["genre"] == "Hentai") & (anime["episodes"] == "Unknown"), "episodes"] = "1"
+    anime.loc[(anime["type"] == "OVA") & (anime["episodes"] == "Unknown"), "episodes"] = "1"
+    anime.loc[(anime["type"] == "Movie") & (anime["episodes"] == "Unknown")] = "1"
+    anime = anime[anime['type'].notna()]
+    anime["rating"].fillna(anime["rating"].median()-1, inplace=True)
+
+    anime["members"] = anime["members"].astype(float)
+    return anime
+
+
+
+
+anime, rating = load_data()
+anime = clean_data(anime)
+anime = fill_missing_data(anime)
+anime.to_csv("clean_anime.csv")
