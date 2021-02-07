@@ -1,22 +1,60 @@
+import warnings
+from sklearn.metrics.pairwise import cosine_similarity
 from AnimeRS.preprocess import *
+import numpy as np
 
-
-def calc_quantile_mean(anime):
+def calc_quantile_mean(clean_anime):
     """
     :var quantile: takes the member at 0.75 position in the normal distribution of the data
     :var mean: calculates the average of the rating of each anime.
     """
-    quantile = anime.members.quantile(0.75)
-    mean = anime.rating.mean()
+    quantile = clean_anime.members.quantile(0.75)
+    mean = clean_anime.rating.mean()
     return quantile, mean
 
 
-def weighted_rating(anime,quantile,mean):
+def weighted_rating(clean_anime, quantile, mean):
     """
     :var term: gets the total users who rated each anime.
-    :return : calculation of the weighted rating of each anime.
     """
-    term = anime['members'] / (quantile + anime['members'])
-    return anime['rating'] * term + (1 - term) * mean
+    term = clean_anime['members'] / (quantile + clean_anime['members'])
+    return clean_anime['rating'] * term + (1 - term) * mean
 
 
+def cosine_sim(anime_features):
+    """
+    calculating similarity for each anime with another anime.
+    converting to float for easier calculation.
+    """
+    anime_features_values = anime_features.values.astype(np.float32)
+    return cosine_similarity(anime_features_values,anime_features_values)
+
+
+def get_recommendation(anime_name, cosine_sim, clean_anime):
+    """
+    Getting pairwise similarity scores for all anime in the data frame.
+    The function returns the top 10 most similar anime to the given query.
+    """
+    idx = anime_index[anime_name]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[0:11]
+    anime_indices = [i[0] for i in sim_scores]
+    result = clean_anime[['name']].iloc[anime_indices].drop(idx)
+    return result
+
+
+if __name__ == "__main__":
+    warnings.filterwarnings("ignore")
+    clean_anime = load_data('clean_anime.csv')
+    quantile, mean = calc_quantile_mean(clean_anime)
+    clean_anime['community_rating'] = clean_anime.apply(weighted_rating, axis=1, args=(quantile, mean))
+    clean_anime.drop(['anime_id', 'rating', 'members', 'episodes'], axis=1, inplace=True)
+    clean_anime.to_csv('clean_anime2.csv', index=False)
+    clean_anime = pd.concat(
+        [clean_anime, clean_anime['type'].str.get_dummies(), clean_anime['genre'].str.get_dummies(sep=',')], axis=1)
+    anime_features = clean_anime.loc[:, "Movie":].copy()
+    cosine_sim = cosine_sim(anime_features)
+    anime_index = pd.Series(clean_anime.index, index=clean_anime.name).drop_duplicates()
+    results = get_recommendation("naruto", cosine_sim, clean_anime)
+    print(f"similar animes to your choice are:\n{results}")

@@ -14,6 +14,7 @@ def clean_data(anime):
     anime["name"] = anime["name"].str.replace('&#039;', '\'')
     anime["name"] = anime["name"].str.replace('\'', '1')
     anime["name"] = anime["name"].str.replace('[^\s\w]', '')
+    anime["name"] = anime["name"].str.lower()
     return anime
 
 def fill_missing_data(anime):
@@ -38,17 +39,13 @@ def fill_missing_data(anime):
     '''
     madian = anime["rating"].median()-1
     anime["rating"].fillna(madian, inplace=True)
-
     # anime["members"] = anime["members"].astype(float)
     return anime
 
 
-def main():
+if __name__=="__main__":
     anime = load_data('anime.csv')
-    # rating = load_data('rating.csv')
     anime = clean_data(anime)
     anime = fill_missing_data(anime)
     anime.to_csv('clean_anime.csv', index=False)
-    clean_anime = load_data('clean_anime.csv')
 
-main()
