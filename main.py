@@ -20,9 +20,12 @@ def clean_data(anime):
     return anime
 
 def fill_missing_data(anime):
-    anime.loc[(anime["genre"] == "Hentai") & (anime["episodes"] == "Unknown"), "episodes"] = "1"
+    # anime.loc[(anime["genre"] == "Hentai") & (anime["episodes"] == "Unknown"), "episodes"] = "1"
     anime.loc[(anime["type"] == "OVA") & (anime["episodes"] == "Unknown"), "episodes"] = "1"
     anime.loc[(anime["type"] == "Movie") & (anime["episodes"] == "Unknown")] = "1"
+    anime.loc[(anime["type"] == "TV") & (anime["episodes"] == "Unknown")] = "1"
+    anime.loc[(anime["type"] == "Music") & (anime["episodes"] == "Unknown")] = "1"
+    anime.loc[(anime["type"] == "ONA") & (anime["episodes"] == "Unknown")] = "1"
     anime = anime[anime['type'].notna()]
     anime["rating"].fillna(anime["rating"].median()-1, inplace=True)
 
