@@ -1,5 +1,3 @@
-import string
-
 import pandas as pd
 import string
 
@@ -43,9 +41,6 @@ def fill_missing_data(anime):
 
     # anime["members"] = anime["members"].astype(float)
     return anime
-
-
-
 
 
 def main():
