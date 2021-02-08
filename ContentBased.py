@@ -44,16 +44,27 @@ def cosine_sim(anime_features):
     anime_features_values = anime_features.values.astype(np.float32)
     return cosine_similarity(anime_features_values,anime_features_values)
 
+def check_name(input, clean_anime):
+    for name in clean_anime['name']:
+        if input == name:
+            return True
+    return False
 
 
 def main():
     warnings.filterwarnings("ignore")
     print("\nRunning Content Based")
-
-    user_input = input("Enter a name of anime so we can recommend you some similar content: ")
-    print("Searching...\n")
-
     clean_anime = load_data('clean_anime.csv')
+    check_flag = False
+
+    while not check_flag:
+        user_input = input("Enter a name of anime so we can recommend you some similar content: ")
+        check_flag = check_name(user_input, clean_anime)
+        if not check_flag:
+            print("\nEntered name is incorrect or doesn't exist. Please try again.")
+
+
+    print("Searching...\n")
     quantile, mean = calc_quantile_mean(clean_anime)
     clean_anime['community_rating'] = clean_anime.apply(weighted_rating, axis=1, args=(quantile, mean))
     clean_anime.drop(['anime_id', 'rating', 'members', 'episodes'], axis=1, inplace=True)

@@ -1,7 +1,5 @@
 import warnings
-
 import pandas as pd
-import string
 
 
 def load_data(dataframe):
