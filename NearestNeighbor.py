@@ -1,4 +1,6 @@
-from AnimeRS.preprocess import *
+#from AnimeRS.Preprocess import *
+from Preprocess import *
+
 from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
@@ -16,7 +18,7 @@ def filter_tables(df_count,num):
     return df_count[df_count['rating_count']>num]
 
 
-def join_tables(filter_anime_rating, filter_user_rating):
+def join_tables(filter_anime_rating, filter_user_rating, rating):
     filtered_rating_anime = rating[rating['anime_id'].isin(filter_anime_rating['anime_id'])]
     filtered_rating = filtered_rating_anime[filtered_rating_anime['user_id'].isin(filter_user_rating['user_id'])]
     return filtered_rating
@@ -37,17 +39,22 @@ def KNN(csr_rating_matrix):
     return knn_model
 
 
-if __name__ == "__main__":
+def main():
+    print("Running NN")
+
+    user_input = input("Enter a name of anime so we can recommend you some similar content: ")
+    print("Searching...\n")
+
     rating = load_data('rating.csv')
     anime = load_data('clean_anime.csv')
     anime_ratings_count,user_rating_count = filter_rating(rating)
     anime_ratings_count.to_csv('clean_rating_NN.csv', index=False)
     filter_anime_rating= filter_tables(anime_ratings_count,250)
     filter_user_rating = filter_tables(user_rating_count,100)
-    joined_table = join_tables(filter_anime_rating,filter_user_rating)
+    joined_table = join_tables(filter_anime_rating,filter_user_rating, rating)
     rating_matrix, csr_matrix = convert_to_matrix(joined_table)
     model = KNN(csr_matrix)
-    user_anime = anime[anime['name'] == 'bleach']
+    user_anime = anime[anime['name'] == user_input.lower()]
     user_anime_index = np.where(rating_matrix.index == int(user_anime['anime_id']))[0][0]
     user_anime_ratings = rating_matrix.iloc[user_anime_index]
     user_anime_ratings_reshaped = user_anime_ratings.values.reshape(1,-1)
@@ -55,7 +62,11 @@ if __name__ == "__main__":
     nearest_neighbors_indices = rating_matrix.iloc[indices[0]].index[1:]
     nearest_neighbors = pd.DataFrame({'anime_id': nearest_neighbors_indices})
     top_10_reco = pd.merge(nearest_neighbors,anime,on='anime_id',how='left')
-    print(top_10_reco)
+    top_10_reco = top_10_reco['name'].to_string(index=False)
+
+    print(f"similar animes to your choice are:\n\n{top_10_reco}")
+
+    print("\nFinished NN")
 
 
 

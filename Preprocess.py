@@ -1,3 +1,5 @@
+import warnings
+
 import pandas as pd
 import string
 
@@ -43,9 +45,12 @@ def fill_missing_data(anime):
     return anime
 
 
-if __name__=="__main__":
+def main():
+    warnings.filterwarnings("ignore")
+    print("-------Running preprocess------")
     anime = load_data('anime.csv')
     anime = clean_data(anime)
     anime = fill_missing_data(anime)
     anime.to_csv('clean_anime.csv', index=False)
+    print("-------Finished preprocess------")
 

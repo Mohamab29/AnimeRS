@@ -1,6 +1,7 @@
 import warnings
 from sklearn.metrics.pairwise import cosine_similarity
-from AnimeRS.preprocess import *
+#from AnimeRS.preprocess import *
+from Preprocess import *
 import numpy as np
 
 def calc_quantile_mean(clean_anime):
@@ -21,16 +22,7 @@ def weighted_rating(clean_anime, quantile, mean):
     return clean_anime['rating'] * term + (1 - term) * mean
 
 
-def cosine_sim(anime_features):
-    """
-    calculating similarity for each anime with another anime.
-    converting to float for easier calculation.
-    """
-    anime_features_values = anime_features.values.astype(np.float32)
-    return cosine_similarity(anime_features_values,anime_features_values)
-
-
-def get_recommendation(anime_name, cosine_sim, clean_anime):
+def get_recommendation(anime_name, cosine_sim, clean_anime, anime_index):
     """
     Getting pairwise similarity scores for all anime in the data frame.
     The function returns the top 10 most similar anime to the given query.
@@ -44,17 +36,36 @@ def get_recommendation(anime_name, cosine_sim, clean_anime):
     return result
 
 
-if __name__ == "__main__":
+def cosine_sim(anime_features):
+    """
+    calculating similarity for each anime with another anime.
+    converting to float for easier calculation.
+    """
+    anime_features_values = anime_features.values.astype(np.float32)
+    return cosine_similarity(anime_features_values,anime_features_values)
+
+
+
+def main():
     warnings.filterwarnings("ignore")
+    print("\nRunning Content Based")
+
+    user_input = input("Enter a name of anime so we can recommend you some similar content: ")
+    print("Searching...\n")
+
     clean_anime = load_data('clean_anime.csv')
     quantile, mean = calc_quantile_mean(clean_anime)
     clean_anime['community_rating'] = clean_anime.apply(weighted_rating, axis=1, args=(quantile, mean))
     clean_anime.drop(['anime_id', 'rating', 'members', 'episodes'], axis=1, inplace=True)
-    clean_anime.to_csv('clean_anime2.csv', index=False)
+    clean_anime.to_csv('clean_anime_CB.csv', index=False)
     clean_anime = pd.concat(
         [clean_anime, clean_anime['type'].str.get_dummies(), clean_anime['genre'].str.get_dummies(sep=',')], axis=1)
     anime_features = clean_anime.loc[:, "Movie":].copy()
-    cosine_sim = cosine_sim(anime_features)
+    cosine_sim_val = cosine_sim(anime_features)
     anime_index = pd.Series(clean_anime.index, index=clean_anime.name).drop_duplicates()
-    results = get_recommendation("naruto", cosine_sim, clean_anime)
-    print(f"similar animes to your choice are:\n{results}")
+    results = get_recommendation(user_input.lower(), cosine_sim_val, clean_anime, anime_index)
+    results = results['name'].to_string(index=False)
+
+    print(f"similar animes to your choice are:\n\n{results}")
+    print("\nFinished Content Based")
+
