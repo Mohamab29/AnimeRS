@@ -1,4 +1,4 @@
-#from AnimeRS.Preprocess import *
+# from AnimeRS.Preprocess import *
 from Preprocess import *
 
 from scipy.sparse import csr_matrix
@@ -11,10 +11,10 @@ def filter_rating(rating):
         columns={'rating': 'rating_count'})
     user_rating_count = rating.groupby(by='user_id').count()['rating'].reset_index().rename(
         columns={'rating': 'rating_count'})
-    return anime_ratings_count,user_rating_count
+    return anime_ratings_count, user_rating_count
 
 
-def filter_tables(df_count,num):
+def filter_tables(df_count, num):
     return df_count[df_count['rating_count'] > num]
 
 
@@ -40,8 +40,6 @@ def KNN(csr_rating_matrix):
 
 
 def check_name(input, clean_anime):
-    print("in check name")
-
     for name in clean_anime['name']:
         if input == name:
             return True
@@ -66,26 +64,23 @@ def main():
 
     anime_ratings_count, user_rating_count = filter_rating(rating)
     anime_ratings_count.to_csv('clean_rating_NN.csv', index=False)
-    filter_anime_rating= filter_tables(anime_ratings_count,250)
-    filter_user_rating = filter_tables(user_rating_count,100)
-    joined_table = join_tables(filter_anime_rating,filter_user_rating, rating)
+    filter_anime_rating = filter_tables(anime_ratings_count, 250)
+    filter_user_rating = filter_tables(user_rating_count, 100)
+    joined_table = join_tables(filter_anime_rating, filter_user_rating, rating)
     rating_matrix, csr_rating_matrix = convert_to_matrix(joined_table)
+    # preprocessing ends here ////////
+    ## model and prediction
     model = KNN(csr_rating_matrix)
     user_anime = anime[anime['name'] == user_input.lower()]
     user_anime_index = np.where(rating_matrix.index == int(user_anime['anime_id']))[0][0]
     user_anime_ratings = rating_matrix.iloc[user_anime_index]
-    user_anime_ratings_reshaped = user_anime_ratings.values.reshape(1,-1)
+    user_anime_ratings_reshaped = user_anime_ratings.values.reshape(1, -1)
     distances, indices = model.kneighbors(user_anime_ratings_reshaped, n_neighbors=11)
     nearest_neighbors_indices = rating_matrix.iloc[indices[0]].index[1:]
     nearest_neighbors = pd.DataFrame({'anime_id': nearest_neighbors_indices})
-    top_10_reco = pd.merge(nearest_neighbors, anime,on='anime_id',how='left')
+    top_10_reco = pd.merge(nearest_neighbors, anime, on='anime_id', how='left')
     top_10_reco = top_10_reco['name'].to_string(index=False)
 
     print(f"similar animes to your choice are:\n\n{top_10_reco}")
 
     print("\nFinished NN")
-
-
-
-
-

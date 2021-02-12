@@ -17,6 +17,7 @@ def clean_data(anime):
     anime["name"] = anime["name"].str.lower()
     return anime
 
+
 def fill_missing_data(anime):
     '''
     making data clearer and changing UNKNOWN values to 1 for better data usage.
@@ -37,7 +38,7 @@ def fill_missing_data(anime):
     '''
     anime without rating is changed to median rating.
     '''
-    madian = anime["rating"].median()-1
+    madian = anime["rating"].median() - 1
     anime["rating"].fillna(madian, inplace=True)
     # anime["members"] = anime["members"].astype(float)
     return anime
@@ -51,4 +52,3 @@ def main():
     anime = fill_missing_data(anime)
     anime.to_csv('clean_anime.csv', index=False)
     print("-------Finished preprocess------")
-
