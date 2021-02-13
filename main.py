@@ -1,4 +1,5 @@
-import Preprocess, ContentBased, NearestNeighbor
+from AnimeRS import  Preprocess, ContentBased, NearestNeighbor
+# import Preprocess, ContentBased, NearestNeighbor
 import time
 from consolemenu import *
 from consolemenu.items import *
@@ -17,6 +18,7 @@ def runContent():
 
 
 def runNN():
+
     time.sleep(1)
     NearestNeighbor.main()
     time.sleep(1)

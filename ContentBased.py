@@ -1,9 +1,8 @@
 import warnings
 from sklearn.metrics.pairwise import cosine_similarity
-# from AnimeRS.preprocess import *
-from Preprocess import *
+from AnimeRS.Preprocess import *
+# from Preprocess import *
 import numpy as np
-
 
 def calc_quantile_mean(clean_anime):
     """
@@ -43,8 +42,7 @@ def cosine_sim(anime_features):
     converting to float for easier calculation.
     """
     anime_features_values = anime_features.values.astype(np.float32)
-    return cosine_similarity(anime_features_values, anime_features_values)
-
+    return cosine_similarity(anime_features_values,anime_features_values)
 
 def check_name(input, clean_anime):
     for name in clean_anime['name']:
@@ -65,6 +63,7 @@ def main():
         if not check_flag:
             print("\nEntered name is incorrect or doesn't exist. Please try again.")
 
+
     print("Searching...\n")
     quantile, mean = calc_quantile_mean(clean_anime)
     clean_anime['community_rating'] = clean_anime.apply(weighted_rating, axis=1, args=(quantile, mean))
@@ -73,9 +72,6 @@ def main():
     clean_anime = pd.concat(
         [clean_anime, clean_anime['type'].str.get_dummies(), clean_anime['genre'].str.get_dummies(sep=',')], axis=1)
     anime_features = clean_anime.loc[:, "Movie":].copy()
-    # preprocessing ends here ////////
-
-    ## model and prediction
     cosine_sim_val = cosine_sim(anime_features)
     anime_index = pd.Series(clean_anime.index, index=clean_anime.name).drop_duplicates()
     results = get_recommendation(user_input.lower(), cosine_sim_val, clean_anime, anime_index)
@@ -83,3 +79,4 @@ def main():
 
     print(f"similar animes to your choice are:\n\n{results}")
     print("\nFinished Content Based")
+
