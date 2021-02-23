@@ -1,7 +1,7 @@
 import warnings
 from sklearn.metrics.pairwise import cosine_similarity
-from AnimeRS.Preprocess import *
-# from Preprocess import *
+# from AnimeRS.Preprocess import *
+from Preprocess import *
 import numpy as np
 
 def calc_quantile_mean(clean_anime):
