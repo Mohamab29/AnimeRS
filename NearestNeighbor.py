@@ -1,5 +1,5 @@
-from AnimeRS.Preprocess import *
-# from Preprocess import *
+# from AnimeRS.Preprocess import *
+from Preprocess import *
 
 from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
