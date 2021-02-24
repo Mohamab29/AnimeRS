@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>AnimeRS-preprocessing</title>
+<title>AnimeRS</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13112,6 +13112,48 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h5>Additional libraries used in Content Based system</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5>Additional libraries used in Knn model</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="1-the-preprocessing-of-the-anime.csv-file">1-the preprocessing of the anime.csv file<a class="anchor-link" href="#1-the-preprocessing-of-the-anime.csv-file">&#182;</a></h3><p>As mentioned above the anime.csv file contains genre,type,rating and we will later use these in order to recommend anime based on it's gener and type which we will treat as equal and turn them into one hot encoded features for the cosine-smiliraty.<br>
 we only used pandas to work dircetly with the data , the other libraries are just for the visualisation of the data ...</p>
 
@@ -13120,7 +13162,7 @@ we only used pandas to work dircetly with the data , the other libraries are jus
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Importing required libraries.</span>
@@ -13147,7 +13189,7 @@ the function takes the the file path and then returns it as a <a href="https://p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;AnimeRS-Data/anime.csv&#39;</span><span class="p">)</span>
@@ -13165,7 +13207,7 @@ the function takes the the file path and then returns it as a <a href="https://p
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[2]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
@@ -13269,7 +13311,7 @@ the function takes the the file path and then returns it as a <a href="https://p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
@@ -13285,7 +13327,7 @@ the function takes the the file path and then returns it as a <a href="https://p
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[3]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -13317,7 +13359,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
@@ -13333,7 +13375,7 @@ dtype: object</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13358,7 +13400,7 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -13374,7 +13416,7 @@ dtype: object</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[5]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -13398,7 +13440,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;episodes&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -13414,7 +13456,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
@@ -13440,7 +13482,7 @@ let's fix that by first removing the rows that contain missing data in the genre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
@@ -13462,7 +13504,7 @@ let's fix that by first removing the rows that contain missing data in the genre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">madian</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
@@ -13476,7 +13518,7 @@ let's fix that by first removing the rows that contain missing data in the genre
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -13492,7 +13534,7 @@ let's fix that by first removing the rows that contain missing data in the genre
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -13524,7 +13566,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;episodes&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">),</span> <span class="s2">&quot;episodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
@@ -13537,7 +13579,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;episodes&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -13553,7 +13595,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -13578,7 +13620,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -13594,7 +13636,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
@@ -13617,9 +13659,17 @@ dtype: int64</pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This table shows the distributaion of types of anime.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
@@ -13635,13 +13685,13 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[15]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1e028f44be0&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1fa195a60a0&gt;</pre>
 </div>
 
 </div>
@@ -13667,7 +13717,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
@@ -13683,13 +13733,13 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1e0296a5940&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1fa19ceab80&gt;</pre>
 </div>
 
 </div>
@@ -13731,7 +13781,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13747,7 +13797,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -13777,7 +13827,7 @@ Name: name, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;#039;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -13795,7 +13845,7 @@ Name: name, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13811,7 +13861,7 @@ Name: name, dtype: object</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[17]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
 
 
 
@@ -13841,7 +13891,7 @@ Name: name, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;AnimeRS-Data/clean_anime.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -13862,7 +13912,7 @@ Name: name, dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;AnimeRS-Data/clean_anime.csv&#39;</span><span class="p">)</span> <span class="c1"># loading the cleaned data</span>
@@ -13889,7 +13939,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">calc_quantile_mean</span><span class="p">(</span><span class="n">clean_anime</span><span class="p">):</span>
@@ -13917,7 +13967,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">quantile</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">calc_quantile_mean</span><span class="p">(</span><span class="n">clean_anime</span><span class="p">)</span>
@@ -13931,7 +13981,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span><span class="p">[[</span><span class="s1">&#39;community_rating&#39;</span><span class="p">,</span><span class="s1">&#39;rating&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13947,7 +13997,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[22]:</div>
+    <div class="prompt output_prompt">Out[24]:</div>
 
 
 
@@ -14021,7 +14071,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;anime_id&#39;</span><span class="p">,</span> <span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="s1">&#39;episodes&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#we drop unwanted columns </span>
@@ -14032,9 +14082,34 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>here we can see the datasplit between the genres in our dataset</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="AnimeRS-Data/genre-chart1.jpeg" alt="Genre Chart"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the chart above we can see the disturbation of the genres and their frequencies
+and because the cosine similarity needs a lot of values to compare to , so the less data there is the less compatible results we'll get.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
@@ -14048,7 +14123,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -14064,7 +14139,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[25]:</div>
+    <div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -14373,7 +14448,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking for duplicated columns</span>
@@ -14390,7 +14465,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[26]:</div>
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
@@ -14417,7 +14492,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># we now remove the duplicated columns</span>
@@ -14431,7 +14506,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span><span class="o">.</span><span class="n">columns</span>
@@ -14447,7 +14522,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[28]:</div>
+    <div class="prompt output_prompt">Out[30]:</div>
 
 
 
@@ -14479,7 +14554,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_anime</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">shape</span>
@@ -14495,7 +14570,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[31]:</div>
 
 
 
@@ -14520,7 +14595,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_features</span> <span class="o">=</span> <span class="n">clean_anime</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;Movie&quot;</span><span class="p">:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14533,7 +14608,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_features</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
@@ -14549,7 +14624,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[31]:</div>
+    <div class="prompt output_prompt">Out[33]:</div>
 
 
 
@@ -14755,7 +14830,7 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After that we have for each anime a one hot encoded feature vector for the consine similarity which will be shown in <strong>part 2 :)</strong></p>
+<p>After that we have for each anime a one hot encoded feature vector for the consine similarity which will be shown now.</p>
 
 </div>
 </div>
@@ -14763,17 +14838,375 @@ and that for us a is some term and we multiplayed that with rating + the term mu
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Collaborative-filtering-:">Collaborative filtering :<a class="anchor-link" href="#Collaborative-filtering-:">&#182;</a></h3><p>after we preprocessed for the CBRS we now do the same thing for this recommender system,
-in this method we will use knn using cosine similarity so we will need the the rating.csv file and later for the knn model we use cleaned_anime.csv file.<br>
-<strong>we first start by loading the rating.csv</strong><br>
-the rating file contains the rating for each user per anime so if the user didn't rate an anime the rating will be -1</p>
+<h4>In our Content Based system we give a recomendation based on similarity of the features to the vector of the user's input.</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>note</strong> results below.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cosine_sim</span><span class="p">(</span><span class="n">anime_features</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculating similarity for each anime with another anime.</span>
+<span class="sd">    converting to float for easier calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#     anime_features_values = anime_features.values.astype(np.float32)</span>
+    <span class="k">return</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">anime_features</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">anime_features</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4>We calculate the cosine similarity for each feature vector</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cosine_sim_val</span> <span class="o">=</span> <span class="n">cosine_sim</span><span class="p">(</span><span class="n">anime_features</span><span class="p">)</span>
+<span class="n">cosine_sim_val</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[45]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[1.        , 0.        , 0.        , ..., 0.        , 0.        ,
+        0.31622777],
+       [0.        , 1.        , 0.375     , ..., 0.        , 0.        ,
+        0.        ],
+       [0.        , 0.375     , 1.        , ..., 0.        , 0.        ,
+        0.        ],
+       ...,
+       [0.        , 0.        , 0.        , ..., 1.        , 1.        ,
+        0.5       ],
+       [0.        , 0.        , 0.        , ..., 1.        , 1.        ,
+        0.5       ],
+       [0.31622777, 0.        , 0.        , ..., 0.5       , 0.5       ,
+        1.        ]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cosine_sim_val</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[47]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(12210, 12210)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">clean_anime</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">clean_anime</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">anime_index</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[46]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>name
+kimi no na wa                                            0
+fullmetal alchemist brotherhood                          1
+gintama                                                  2
+steinsgate                                               3
+gintama1                                                 4
+                                                     ...  
+toushindai my lover minami tai mechaminami           12205
+under world                                          12206
+violence gekiga david no hoshi                       12207
+violence gekiga shin david no hoshi inma densetsu    12208
+yasuji no pornorama yacchimae                        12209
+Length: 12210, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_recommendation</span><span class="p">(</span><span class="n">anime_name</span><span class="p">,</span> <span class="n">cosine_sim</span><span class="p">,</span> <span class="n">clean_anime</span><span class="p">,</span> <span class="n">anime_index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Getting pairwise similarity scores for all anime in the data frame.</span>
+<span class="sd">    The function returns the top 10 most similar anime to the given query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">anime_index</span><span class="p">[</span><span class="n">anime_name</span><span class="p">]</span>
+    <span class="n">sim_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">cosine_sim</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="n">sim_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sim_scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sim_scores</span> <span class="o">=</span> <span class="n">sim_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span>
+    <span class="n">anime_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sim_scores</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">clean_anime</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">anime_indices</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the function above we take four paramaters:</p>
+<ul>
+    <li>anime_name: the query of the user</li>
+    <li>cosine_sim: a matrix of similarities</li>
+    <li>clean_anime: table of each anime ,weighted rating and it's features  </li>
+    <li>anime_index: the indices of all the animes in the dataset</li>
+</ul><p>by the name of the given anime we search for it's index in the anime_index matrix , after that we enumerate over the vector and make a list of the similarities e.g: [0.25,0.89,0.75,...]
+we then sort the sim_scores and take the top 10 animes and their indices and finally we access the location of the animes in the dataset</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In our main project we take the user's input from the consloe and adjust it to our preprocessed dataset</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#results = get_recommendation(user_input.lower(), cosine_sim_val, clean_anime, anime_index)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">get_recommendation</span><span class="p">(</span><span class="s1">&#39;dragon ball z&#39;</span><span class="p">,</span> <span class="n">cosine_sim_val</span><span class="p">,</span> <span class="n">clean_anime</span><span class="p">,</span> <span class="n">anime_index</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">results</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[52]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>515</th>
+      <td>dragon ball kai 2014</td>
+    </tr>
+    <tr>
+      <th>588</th>
+      <td>dragon ball kai</td>
+    </tr>
+    <tr>
+      <th>1930</th>
+      <td>dragon ball super</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>one piece</td>
+    </tr>
+    <tr>
+      <th>1409</th>
+      <td>dragon ball z movie 15 fukkatsu no f</td>
+    </tr>
+    <tr>
+      <th>3202</th>
+      <td>dragon ball z summer vacation special</td>
+    </tr>
+    <tr>
+      <th>4273</th>
+      <td>dragon ball z atsumare gokuu world</td>
+    </tr>
+    <tr>
+      <th>4312</th>
+      <td>dragon ball gt goku gaiden yuuki no akashi wa ...</td>
+    </tr>
+    <tr>
+      <th>5997</th>
+      <td>dragon ball z movie 11 super senshi gekiha kat...</td>
+    </tr>
+    <tr>
+      <th>615</th>
+      <td>naruto shippuuden</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And as an anime fan I approve of these results because they are accurate</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Collaborative-filtering-using-KNN:">Collaborative filtering using KNN:<a class="anchor-link" href="#Collaborative-filtering-using-KNN:">&#182;</a></h3><h4>In our KNN model we give a recomendation based on similarity of the features to the vector of the user's input.</h4><ul>
+<li>In this recommendation system, we will be using the collaborative filtering technique.</li>
+<li>By using this technique, the system will recommend anime based on the nearest rating between the ratings of 
+   user's anime and the ratings of other anime.</li>
+<li>For example: if I watched 10 anime and gave each of them a some rating.And now, my friend watched an anime from my 
+   anime list and he now asks me to recommend three animes. then, I will recommend three animes with the closest 
+   rating to the rating I gave for the anime that my friend watched.</li>
+</ul>
+<p>after we preprocessed for the CBRS we now do the same thing for this recommender system,
+in this method we will use knn using cosine similarity so we will need the the rating.csv file and later for the knn model we also used clean_anime.csv file.<br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>we first start by loading the rating.csv</strong><br>
+the rating file contains the rating for each user per anime , if the user didn't rate an anime the rating will be -1</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;AnimeRS-Data/rating.csv&#39;</span><span class="p">)</span>
@@ -14786,7 +15219,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -14802,7 +15235,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[33]:</div>
+    <div class="prompt output_prompt">Out[54]:</div>
 
 
 
@@ -14874,7 +15307,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating</span><span class="o">.</span><span class="n">shape</span>
@@ -14890,7 +15323,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[34]:</div>
+    <div class="prompt output_prompt">Out[55]:</div>
 
 
 
@@ -14907,7 +15340,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># we have no null values so let&#39;s get started</span>
@@ -14923,7 +15356,7 @@ the rating file contains the rating for each user per anime so if the user didn'
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[35]:</div>
+    <div class="prompt output_prompt">Out[56]:</div>
 
 
 
@@ -14941,17 +15374,74 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[63]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1fa1a3bc4c0&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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Z8U8z/57/9KO6+WxWfPwGkz/wn1MnOM4zvUesH37dp0/f16lpaWSpPfff1/Nzc168cUXJUn/+te/tGnTJr377ruSpOPHj2vp0qXavXv3gIcFAAxd2N+KCQaDiov7/38dHMe5ZDvcfgDA8Aob9vT0dLW3t4e229vblZaWds39Z86cuWQ/AGB4hQ373XffrQMHDujs2bPq7u7Wnj17lJ2dHdo/YcIE+Xw+NTU1SZLq6uou2Q8AGF5hr7FLP/264/bt29Xb26tFixapuLhYxcXFKikpUWZmpo4cOaKKigp1dnYqIyNDL730kpKSkoZjfgDAZSIKOwBg5OCWAgBgDGEHAGMIOwAYQ9gBwBjCHoH6+notXLhQ8+bNU3V1tdfjuG7r1q3Kzc1Vbm6uNm3a5PU4UfHyyy9r1apVXo/hqoaGBhUUFGjBggVat26d1+O4rq6uLvR1+fLLL3s9jis6OzuVl5enEydOSPrpli2BQEDz5s1TVVWVewdycF3fffedM2fOHOf77793urq6nEAg4Bw9etTrsVyzf/9+549//KPT09PjXLx40SkqKnL27Nnj9ViuamxsdLKyspxnn33W61Fc88033zizZs1yWltbnYsXLzqFhYXOP//5T6/Hcs358+edO++80+no6HB6e3udRYsWOfv37/d6rCH597//7eTl5TkZGRnOt99+63R3dzuzZ892vvnmG6e3t9dZsmSJa59DztjD+PlN0EaPHh26CZoVfr9fq1atUlJSkhITE3XLLbfo1KlTXo/lmh9++EFVVVVatmyZ16O4au/evVq4cKHS09OVmJioqqoqTZs2zeuxXNPf369gMKju7m719fWpr69PPp/P67GGpKamRpWVlaFX5jc3N2vixIm66aablJCQoEAg4FpbuGl6GKdPn5bf7w9tp6Wlqbm52cOJ3HXrrbeG3m5padGnn34auqGbBWvWrFFpaalaW1u9HsVVx48fV2JiopYtW6bW1lb97ne/0zPPPOP1WK4ZO3asnn76aS1YsECjRo3SnXfeqdtvv93rsYZk/fr1l2xfrS1tbW2uHIsz9jB+KTc5O3r0qJYsWaKVK1dq0qRJXo/jivfff1+/+c1vNHPmTK9HcV1/f78OHDigDRs26L333lNzc7Nqa2u9Hss1R44c0V//+lf94x//0Geffab4+Hjt3LnT67FcFc22EPYwwt0EzYKmpiY98sgjWrFihR544AGvx3HN3/72N+3fv1/5+fl67bXX1NDQoA0bNng9lit+/etfa+bMmbrxxhuVnJys++67z9T/Se7bt08zZ85UamqqkpKSVFBQoC+++MLrsVwVzbYQ9jDC3QRtpGttbdUTTzyhzZs3Kzc31+txXPXWW2/pk08+UV1dnUpKSnTvvfeqvLzc67FcMWfOHO3bt0/nzp1Tf3+/PvvsM2VkZHg9lmumTJmixsZGnT9/Xo7jqKGhQZmZmV6P5app06bp66+/1vHjx9Xf369PPvnEtbZwjT2M8ePHq7S0VEVFRaGboN12221ej+WanTt3qqenRxs3bgy9b/HixSosLPRwKoQzbdo0/eUvf9FDDz2k3t5e3XPPPfrDH/7g9ViumTVrlv7zn/+ooKBAiYmJyszM1NKlS70ey1U+n08bN27UU089pZ6eHs2ePVvz58935bm5CRgAGMOlGAAwhrADgDGEHQCMIewAYAxhBwBjCDsAGEPYAcAYwg4AxvwfImWRjs/C410AAAAASUVORK5CYII=
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Remove-anime-with-low-count-of-ratings-and-users-who-gave-low-count-of-ratings">Remove anime with low count of ratings and users who gave low count of ratings<a class="anchor-link" href="#Remove-anime-with-low-count-of-ratings-and-users-who-gave-low-count-of-ratings">&#182;</a></h4><p>We will only consider popular anime (rating count over 250) and users who gave lots of rating on different anime (&gt;100)</p>
+<p>we can see that a lot of useres didn't vote for a lot of animes , but we can also see that there's a lot of rated animes with score of 6 and above</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Remove-animes-with-low-count-of-ratings-and-users-who-gave-low-count-of-ratings">Remove animes with low count of ratings and users who gave low count of ratings<a class="anchor-link" href="#Remove-animes-with-low-count-of-ratings-and-users-who-gave-low-count-of-ratings">&#182;</a></h4><p>We will only consider popular anime (rating count over 250) and users who gave lots of rating on different anime (&gt;100),
+<strong>but this is of coruse changeable</strong>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_ratings_count</span> <span class="o">=</span> <span class="n">rating</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;anime_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
@@ -14965,7 +15455,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_ratings_count</span>
@@ -14981,7 +15471,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[37]:</div>
+    <div class="prompt output_prompt">Out[65]:</div>
 
 
 
@@ -15078,7 +15568,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_ratings_count</span><span class="o">=</span><span class="n">anime_ratings_count</span><span class="p">[</span><span class="n">anime_ratings_count</span><span class="p">[</span><span class="s1">&#39;rating_count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">250</span><span class="p">]</span>
@@ -15089,9 +15579,17 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>so after we grouped by the anime id we took only animes with ratings count above 250 so we can have less data and more accurate results</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_ratings_count</span>
@@ -15107,7 +15605,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[39]:</div>
+    <div class="prompt output_prompt">Out[68]:</div>
 
 
 
@@ -15204,10 +15702,11 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_rating_count</span> <span class="o">=</span> <span class="n">rating</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">####now we do the same thing for the for the users</span>
+<span class="n">user_rating_count</span> <span class="o">=</span> <span class="n">rating</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="s1">&#39;rating_count&#39;</span><span class="p">})</span>
 </pre></div>
 
@@ -15218,7 +15717,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_rating_count</span>
@@ -15234,7 +15733,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[41]:</div>
+    <div class="prompt output_prompt">Out[70]:</div>
 
 
 
@@ -15331,7 +15830,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_rating_count</span><span class="o">=</span><span class="n">user_rating_count</span><span class="p">[</span><span class="n">user_rating_count</span><span class="p">[</span><span class="s1">&#39;rating_count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">]</span>
@@ -15344,7 +15843,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_rating_count</span>
@@ -15360,7 +15859,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[43]:</div>
+    <div class="prompt output_prompt">Out[72]:</div>
 
 
 
@@ -15457,7 +15956,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">join_tables</span><span class="p">(</span><span class="n">filter_anime_rating</span><span class="p">,</span> <span class="n">filter_user_rating</span><span class="p">,</span> <span class="n">rating</span><span class="p">):</span>
@@ -15480,7 +15979,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">joined_table</span> <span class="o">=</span> <span class="n">join_tables</span><span class="p">(</span><span class="n">anime_ratings_count</span><span class="p">,</span> <span class="n">user_rating_count</span><span class="p">,</span> <span class="n">rating</span><span class="p">)</span>
@@ -15493,7 +15992,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">joined_table</span>
@@ -15509,7 +16008,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[46]:</div>
+    <div class="prompt output_prompt">Out[77]:</div>
 
 
 
@@ -15626,7 +16125,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span> <span class="c1">## the csr matrix is used in order to save data</span>
@@ -15644,9 +16143,18 @@ dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>csr_rating_matrix</strong> is a form of matrix that contains nonzero values as apposed to the <strong>ratings_matrix</strong>.
+The reasoning behind this decision is to overcome the sparsity problem.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating_matrix</span><span class="p">,</span> <span class="n">csr_rating_matrix</span> <span class="o">=</span> <span class="n">convert_to_matrix</span><span class="p">(</span><span class="n">joined_table</span><span class="p">)</span>
@@ -15659,40 +16167,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csr_rating_matrix</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[49]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(3318, 24676)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating_matrix</span>
@@ -15708,7 +16183,7 @@ dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[50]:</div>
+    <div class="prompt output_prompt">Out[81]:</div>
 
 
 
@@ -16058,7 +16533,1242 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That's it for the preprocessing of the rating data which will be used in part two for building the knn model along with the clean_anime.csv</p>
+<p><strong>As we can see from the table above for each anime there is a full row of ratings by different users and each row will represent a vector that we will use in order to calculate cosine similarties between different animes.
+The values will be from -1 to 10 where -1 means no rating and 10 means the highest rating</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">csr_rating_matrix</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>  (0, 4)	-1.0
+  (0, 7)	9.0
+  (0, 12)	10.0
+  (0, 14)	10.0
+  (0, 15)	10.0
+  (0, 16)	-1.0
+  (0, 21)	10.0
+  (0, 32)	9.0
+  (0, 33)	10.0
+  (0, 36)	10.0
+  (0, 39)	9.0
+  (0, 40)	8.0
+  (0, 44)	7.0
+  (0, 45)	8.0
+  (0, 49)	10.0
+  (0, 51)	8.0
+  (0, 52)	10.0
+  (0, 55)	8.0
+  (0, 56)	9.0
+  (0, 62)	10.0
+  (0, 64)	9.0
+  (0, 65)	-1.0
+  (0, 67)	-1.0
+  (0, 69)	7.0
+  (0, 71)	-1.0
+  :	:
+  (3317, 24343)	9.0
+  (3317, 24345)	-1.0
+  (3317, 24359)	10.0
+  (3317, 24383)	-1.0
+  (3317, 24385)	10.0
+  (3317, 24391)	8.0
+  (3317, 24392)	-1.0
+  (3317, 24403)	8.0
+  (3317, 24423)	-1.0
+  (3317, 24426)	8.0
+  (3317, 24429)	8.0
+  (3317, 24444)	-1.0
+  (3317, 24450)	9.0
+  (3317, 24459)	8.0
+  (3317, 24468)	7.0
+  (3317, 24469)	8.0
+  (3317, 24471)	-1.0
+  (3317, 24480)	9.0
+  (3317, 24493)	-1.0
+  (3317, 24541)	8.0
+  (3317, 24546)	-1.0
+  (3317, 24557)	8.0
+  (3317, 24579)	10.0
+  (3317, 24583)	8.0
+  (3317, 24631)	9.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>The compressed sparse row:</strong> (CSR) represents a matrix M by three (one-dimensional) arrays, that respectively contain nonzero values(on the right), the extents of rows, and column indices(on the left).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h4>before fitting the data into nearest neighbor model</h4>
+    we first take the user input, secondly we check the index of this anime in the clean_anime.csv dataset and finally we take the whole row of the rating matrix which contains the rating per anime for all the useres</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;AnimeRS-Data/clean_anime.csv&#39;</span><span class="p">)</span>
+<span class="n">user_anime</span> <span class="o">=</span> <span class="n">anime</span><span class="p">[</span><span class="n">anime</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dragon ball z&#39;</span><span class="p">]</span>
+<span class="n">user_anime</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[86]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>anime_id</th>
+      <th>name</th>
+      <th>genre</th>
+      <th>type</th>
+      <th>episodes</th>
+      <th>rating</th>
+      <th>members</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>206</th>
+      <td>813</td>
+      <td>dragon ball z</td>
+      <td>Action, Adventure, Comedy, Fantasy, Martial Ar...</td>
+      <td>TV</td>
+      <td>291</td>
+      <td>8.32</td>
+      <td>375662</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_anime_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rating_matrix</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">user_anime</span><span class="p">[</span><span class="s1">&#39;anime_id&#39;</span><span class="p">]))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">user_anime_index</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[87]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>565</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_anime_ratings</span> <span class="o">=</span> <span class="n">rating_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">user_anime_index</span><span class="p">]</span>
+<span class="n">user_anime_ratings</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[91]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>user_id
+1        0.0
+5        5.0
+7        9.0
+11       0.0
+13       0.0
+        ... 
+73503    5.0
+73504    0.0
+73507    0.0
+73510    8.0
+73515    0.0
+Name: 813, Length: 24676, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[93]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_anime_ratings_reshaped</span> <span class="o">=</span> <span class="n">user_anime_ratings</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_anime_ratings_reshaped</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[94]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[0., 5., 9., ..., 0., 8., 0.]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">user_anime_ratings_reshaped</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[108]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(1, 24676)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4>Fitting the model</h4><p>we build the model by using:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>and our metric of chocie is non other than cosine similarity</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">KNN</span><span class="p">(</span><span class="n">csr_rating_matrix</span><span class="p">):</span>
+    <span class="n">knn_model</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span>
+    <span class="n">knn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">csr_rating_matrix</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">knn_model</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[97]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#we send the csr for the calculations </span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNN</span><span class="p">(</span><span class="n">csr_rating_matrix</span><span class="p">)</span>
+<span class="n">model</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[97]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>NearestNeighbors(metric=&#39;cosine&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[98]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#we want the 10 most popular animes , we wrote 11 because the rating of the anime itself is included</span>
+<span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">user_anime_ratings_reshaped</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[113]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##The indices here are from the rating matrix and we need to find the index for each anime in the clean anime dataset</span>
+<span class="n">indices</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[113]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[ 565,  182,  183,  914,   10,   95,  631,  934, 1543,  184, 1249]],
+      dtype=int64)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[114]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#as you can see the one the one with lowest cosine similarity is the same anime witht the same index</span>
+<span class="p">(</span><span class="n">distances</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[114]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[ 0, 19, 23, 45, 45, 49, 50, 50, 50, 51, 51]], dtype=uint8)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the rating matrix we take the values of the first coloumn by the indices we got from the KNN model which are the anime id</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[116]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rating_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[116]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>user_id</th>
+      <th>1</th>
+      <th>5</th>
+      <th>7</th>
+      <th>11</th>
+      <th>13</th>
+      <th>14</th>
+      <th>17</th>
+      <th>21</th>
+      <th>29</th>
+      <th>35</th>
+      <th>...</th>
+      <th>73494</th>
+      <th>73495</th>
+      <th>73499</th>
+      <th>73500</th>
+      <th>73502</th>
+      <th>73503</th>
+      <th>73504</th>
+      <th>73507</th>
+      <th>73510</th>
+      <th>73515</th>
+    </tr>
+    <tr>
+      <th>anime_id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>813</th>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>223</th>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>225</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>7.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1535</th>
+      <td>0.0</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>-1.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>10.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>121</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>8.0</td>
+      <td>8.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>901</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1575</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>8.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>5114</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>226</th>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>4.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>9.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>2904</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>7.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>11 rows × 24676 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[118]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">anime_ids</span> <span class="o">=</span> <span class="n">rating_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">anime_ids</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[118]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Int64Index([223, 225, 1535, 20, 121, 901, 1575, 5114, 226, 2904], dtype=&#39;int64&#39;, name=&#39;anime_id&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And finally we take the anime ids and search for the names in the clean anime dataset and print them ...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[119]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;anime_id&#39;</span><span class="p">:</span> <span class="n">anime_ids</span><span class="p">})</span>
+<span class="n">nearest_neighbors</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[119]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>anime_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>223</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>225</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1535</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>121</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>901</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1575</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>5114</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>226</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2904</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[139]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">top_10_reco</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">,</span> <span class="n">anime</span><span class="p">,</span><span class="n">on</span><span class="o">=</span><span class="s1">&#39;anime_id&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="n">top_10_reco</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[139]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>anime_id</th>
+      <th>name</th>
+      <th>genre</th>
+      <th>type</th>
+      <th>episodes</th>
+      <th>rating</th>
+      <th>members</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>223</td>
+      <td>dragon ball</td>
+      <td>Adventure, Comedy, Fantasy, Martial Arts, Shou...</td>
+      <td>TV</td>
+      <td>153</td>
+      <td>8.16</td>
+      <td>316102</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>225</td>
+      <td>dragon ball gt</td>
+      <td>Action, Adventure, Comedy, Fantasy, Magic, Sci...</td>
+      <td>TV</td>
+      <td>64</td>
+      <td>6.72</td>
+      <td>226625</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1535</td>
+      <td>death note</td>
+      <td>Mystery, Police, Psychological, Supernatural, ...</td>
+      <td>TV</td>
+      <td>37</td>
+      <td>8.71</td>
+      <td>1013917</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20</td>
+      <td>naruto</td>
+      <td>Action, Comedy, Martial Arts, Shounen, Super P...</td>
+      <td>TV</td>
+      <td>220</td>
+      <td>7.81</td>
+      <td>683297</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>121</td>
+      <td>fullmetal alchemist</td>
+      <td>Action, Adventure, Comedy, Drama, Fantasy, Mag...</td>
+      <td>TV</td>
+      <td>51</td>
+      <td>8.33</td>
+      <td>600384</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>901</td>
+      <td>dragon ball z movie 08 moetsukiro nessen resse...</td>
+      <td>Adventure, Comedy, Fantasy, Sci-Fi, Shounen</td>
+      <td>Movie</td>
+      <td>1</td>
+      <td>7.62</td>
+      <td>65953</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1575</td>
+      <td>code geass hangyaku no lelouch</td>
+      <td>Action, Mecha, Military, School, Sci-Fi, Super...</td>
+      <td>TV</td>
+      <td>25</td>
+      <td>8.83</td>
+      <td>715151</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>5114</td>
+      <td>fullmetal alchemist brotherhood</td>
+      <td>Action, Adventure, Drama, Fantasy, Magic, Mili...</td>
+      <td>TV</td>
+      <td>64</td>
+      <td>9.26</td>
+      <td>793665</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>226</td>
+      <td>elfen lied</td>
+      <td>Action, Drama, Horror, Psychological, Romance,...</td>
+      <td>TV</td>
+      <td>13</td>
+      <td>7.85</td>
+      <td>623511</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2904</td>
+      <td>code geass hangyaku no lelouch r2</td>
+      <td>Action, Drama, Mecha, Military, Sci-Fi, Super ...</td>
+      <td>TV</td>
+      <td>25</td>
+      <td>8.98</td>
+      <td>572888</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[140]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">top_10_reco</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[140]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0                                          dragon ball
+1                                       dragon ball gt
+2                                           death note
+3                                               naruto
+4                                  fullmetal alchemist
+5    dragon ball z movie 08 moetsukiro nessen resse...
+6                       code geass hangyaku no lelouch
+7                      fullmetal alchemist brotherhood
+8                                           elfen lied
+9                    code geass hangyaku no lelouch r2
+Name: name, dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's it for the preprocessing and the recommendation prediction ...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Final-thoughts:">Final thoughts:<a class="anchor-link" href="#Final-thoughts:">&#182;</a></h1><p>We have built a recommender system for anime based on the given query and if it is in the dataset and using unsupervised learning.<br>
+   We used two approaches in order to recommend top N anime titles:<br></p>
+<ul>
+<li>the first approach is based on the content of an anime like genre and type where we turn them into feacture vectors and then comapre them with other titles and check how similar the are to each other</li>
+<li>in the second approach we used the collaborative filtering method where we took the ratings of all the users in the dataset for each anime , so each anime will have a vector of all the users ratings , and in order to choose the most similar titles we used the knn algorithem to give K most similar titles.</li>
+</ul>
+<h3 id="note:">note:<a class="anchor-link" href="#note:">&#182;</a></h3><p>We can improve the RS by making a hybrid system that will take into consideration genre and rating or maybe using an ANN model to improve the learning and personalize the recommendations.</p>
 
 </div>
 </div>
