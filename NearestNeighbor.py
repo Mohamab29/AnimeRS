@@ -70,7 +70,6 @@ def main():
     filter_user_rating = filter_tables(user_rating_count,100)
     joined_table = join_tables(filter_anime_rating,filter_user_rating, rating)
     rating_matrix, csr_rating_matrix = convert_to_matrix(joined_table)
-    print(csr_rating_matrix)
     model = KNN(csr_rating_matrix)
     user_anime = anime[anime['name'] == user_input.lower()]
     user_anime_index = np.where(rating_matrix.index == int(user_anime['anime_id']))[0][0]

@@ -1,4 +1,4 @@
-from AnimeRS import  Preprocess, ContentBased, NearestNeighbor
+import  Preprocess, ContentBased, NearestNeighbor
 # import Preprocess, ContentBased, NearestNeighbor
 import time
 from consolemenu import *
